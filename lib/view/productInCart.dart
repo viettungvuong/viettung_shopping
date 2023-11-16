@@ -31,7 +31,6 @@ class _ProductCartViewState extends State<ProductCartView> {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, child) {
-        final cart = ref.watch(cartNotifierProvider);
 
         return ListTile(
           leading: SizedBox(
@@ -68,18 +67,12 @@ class _ProductCartViewState extends State<ProductCartView> {
                           setState(() {
                             productController.decreaseQuantity();
 
-                            cart[widget.index] = productController.product;
-
-                            ref.watch(cartNotifierProvider.notifier).update(cart);
+                            ref.watch(cartNotifierProvider.notifier).updateAt(widget.index, productController.product);
 
                             //remove from cart if below 0
-                            if (widget.product.getQuantity() <= 0) {
-                              final cartItems =
-                                  ref.watch(cartNotifierProvider.notifier);
-                              cartItems.removeFromCart(widget.product);
+                            if (productController.product.getQuantity() <= 0) {
+                              ref.watch(cartNotifierProvider.notifier).removeFromCart(widget.product);
                             }
-
-                            saveCartItems(ref.watch(cartNotifierProvider));
                           });
                         },
                         child: SizedBox(
@@ -109,11 +102,8 @@ class _ProductCartViewState extends State<ProductCartView> {
                         onTap: () {
                           setState(() {
                             productController.increaseQuantity();
-                            cart[widget.index] = productController.product;
 
-                            ref.watch(cartNotifierProvider.notifier).update(cart);
-
-                            saveCartItems(ref.watch(cartNotifierProvider));
+                            ref.watch(cartNotifierProvider.notifier).updateAt(widget.index, productController.product);
                           });
                         },
                         child: SizedBox(
@@ -131,11 +121,8 @@ class _ProductCartViewState extends State<ProductCartView> {
                       child: InkWell(
                         onTap: () {
                           setState(() {
-                            final cartItems =
-                                ref.watch(cartNotifierProvider.notifier);
-                            cartItems.removeFromCart(widget.product);
+                            ref.watch(cartNotifierProvider.notifier).removeFromCart(widget.product);
 
-                            saveCartItems(ref.watch(cartNotifierProvider));
                           });
                         },
                         child: SizedBox(

@@ -17,14 +17,22 @@ class CartNotifier extends StateNotifier<List<ProductInCart>> {
 
   void removeFromCart(ProductInCart item) {
     state = List.from(state)..remove(item);
+    saveCartItems(state);
   }
 
   void addToCart(ProductInCart item){
     state = List.from(state)..add(item);
+    saveCartItems(state);
+  }
+
+  void updateAt(int index, ProductInCart newProduct){
+    List.from(state)[index] = newProduct;
+    state = List.from(state);
+    saveCartItems(state);
   }
 
   void update(List<ProductInCart> cart){
-    List.from(state)..clear();
+    state = List.from(state)..clear();
     state = List.from(state)..addAll(cart);
   }
 }
