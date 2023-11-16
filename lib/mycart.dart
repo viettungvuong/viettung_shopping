@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:golden_owl_shopping/model/product.dart';
+import 'package:golden_owl_shopping/providers.dart';
 import 'package:golden_owl_shopping/view/productInCart.dart';
+import 'package:provider/provider.dart';
+import 'dart:core';
 
-class MyCartPage extends StatelessWidget {
-  final List<ProductInCart> cartItems;
-
-  const MyCartPage({
-    Key? key,
-    required this.cartItems,
-  }) : super(key: key);
-
+class MyCartPage extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    List<ProductInCart> cart= ref.watch(cartProvider);
+
     return Scaffold(
       //show the price on the top
       appBar: AppBar(
@@ -21,15 +20,16 @@ class MyCartPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Total: ', style: TextStyle(fontWeight: FontWeight.bold),),
-              Text('\$${cartItems.fold(0.0, (previousValue, element) => previousValue + element.calculatePrice())}'),
+              Text('\$${cart.fold(0.0, (previousValue, element) => previousValue + element.calculatePrice())}'),
             ],
           ),
         ],
       ),
+
       body: ListView.builder(
-        itemCount: cartItems.length,
+        itemCount: cart.length,
         itemBuilder: (context, index) {
-          final cartItem = cartItems[index];
+          final cartItem = cart[index];
 
           return ProductCartView(product: cartItem);
         },
