@@ -70,7 +70,7 @@ class _ProductCartViewState extends State<ProductCartView> {
                             ref.watch(cartNotifierProvider.notifier).updateAt(widget.index, productController.product);
 
                             //remove from cart if below 0
-                            if (productController.product.getQuantity() <= 0) {
+                            if (ref.watch(cartNotifierProvider)[widget.index].getQuantity() <= 0) {
                               ref.watch(cartNotifierProvider.notifier).removeFromCart(widget.product);
                             }
                           });
