@@ -9,10 +9,12 @@ import '../model/product.dart';
 
 class ProductCartView extends StatefulWidget {
   final ProductInCart product;
+  final int index;
 
   const ProductCartView({
     Key? key,
     required this.product,
+    required this.index
   }) : super(key: key);
 
   @override
@@ -45,12 +47,21 @@ class _ProductCartViewState extends State<ProductCartView> {
                 onPressed: () {
                   setState(() {
                     productController.decreaseQuantity();
+                    cartItems[widget.index] = productController.product;
+
+                    //remove from cart if below 0
+                    if (widget.product.getQuantity()<=0){
+                      cartItems.remove(widget.product);
+                      // Update the cart provider
+                    }
+
+                    ref.watch(cartProvider.notifier).update((state) => state=cartItems);
                   });
                 },
                 label: Text("Decrease"),
               ),
 
-              Text('x${widget.product.getQuantity()}'),
+              Text('x${productController.product.getQuantity()}'),
 
               // Decrease quantity button
               ElevatedButton.icon(
@@ -58,6 +69,9 @@ class _ProductCartViewState extends State<ProductCartView> {
                 onPressed: () {
                   setState(() {
                     productController.increaseQuantity();
+                    cartItems[widget.index] = productController.product;
+
+                    ref.watch(cartProvider.notifier).update((state) => state=cartItems);
                   });
                 },
                 label: Text("Increase"),
@@ -74,7 +88,7 @@ class _ProductCartViewState extends State<ProductCartView> {
                 onPressed: () {
                   setState(() {
                     // Remove the product from the cart
-                    cartItems.remove(widget.product);
+                    cartItems.removeAt(widget.index);
 
                     // Update the cart provider
                     ref.watch(cartProvider.notifier).update((state) => state=cartItems);
@@ -83,7 +97,7 @@ class _ProductCartViewState extends State<ProductCartView> {
               ),
             ],
           ),
-          trailing: Text('\$${widget.product.calculatePrice()}'),
+          trailing: Text('\$${productController.product.calculatePrice()}'),
         );
       },
     );

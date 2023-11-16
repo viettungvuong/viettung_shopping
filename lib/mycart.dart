@@ -26,13 +26,15 @@ class MyCartPage extends ConsumerWidget {
         ],
       ),
 
-      body: ListView.builder(
+      body: (cart.isNotEmpty) ? ListView.builder(
         itemCount: cart.length,
         itemBuilder: (context, index) {
           final cartItem = cart[index];
 
-          return ProductCartView(product: cartItem);
+          return ProductCartView(product: cartItem, index: index);
         },
+      ):Center(
+        child: Text('Your cart is empty'),
       ),
 
     );
