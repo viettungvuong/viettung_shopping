@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:golden_owl_shopping/view/product.dart';
 
-import 'models/product.dart';
+import 'model/product.dart';
 
 class OurProductPage extends StatefulWidget {
-  final String productImage;
-  final String productName;
-  final String productDescription;
-  final double productPrice;
+  final List<Product> products;
 
   const OurProductPage({
     Key? key,
-    required this.productImage,
-    required this.productName,
-    required this.productDescription,
-    required this.productPrice,
+    required this.products,
   }) : super(key: key);
 
   @override
@@ -21,14 +16,14 @@ class OurProductPage extends StatefulWidget {
 }
 
 class _OurProductPageState extends State<OurProductPage> {
-  final List<Product> products;
+  late List<Product> products;
 
-  const OurProductPage({
-    Key? key,
-    required
+  @override
+  void initState(){
+    super.initState();
 
-    this.products,
-  }) : super(key: key);
+    products = widget.products;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,28 +35,8 @@ class _OurProductPageState extends State<OurProductPage> {
         itemCount: products.length,
         itemBuilder: (context, index) {
           final product = products[index];
-
           return
-            ListTile(
-              leading: Image.network(product.image),
-              title: Text(product.name),
-              subtitle: Text(product.description),
-              trailing: Text('\$${product.price}'),
-              onTap: () {
-                // Navigate to the product detail page for this product
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => OurProductPage(
-                      productImage: product.image,
-                      productName: product.name,
-                      productDescription: product.description,
-                      productPrice: product.price,
-                    ),
-                  ),
-                );
-              },
-            );
+            ProductView(product: product,);
         },
       ),
     );
