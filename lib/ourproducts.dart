@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:golden_owl_shopping/mycart.dart';
 import 'package:golden_owl_shopping/view/product.dart';
 
 import 'model/product.dart';
@@ -31,6 +32,14 @@ class _OurProductPageState extends State<OurProductPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Products'),
+        actions: [
+          ElevatedButton(onPressed: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MyCartPage()),
+            );
+          }, child: Icon(Icons.shopping_cart))
+        ],
       ),
       body: ListView.builder(
         itemCount: products.length,

@@ -37,7 +37,7 @@ class _ProductCartViewState extends State<ProductCartView> {
         final cartItems = ref.watch(cartProvider);
 
         return ListTile(
-          leading: Image.network(widget.product.image),
+          leading: productController.backgroundColor(widget.product.colorHex),
           title: Text(widget.product.name),
           subtitle: Row(
             children: [

@@ -48,4 +48,34 @@ class ProductInCartController {
   void decreaseQuantity() {
     product.updateQuantity(product.getQuantity() - 1);
   }
+
+  Stack backgroundColor(String colorHex){
+    int _getColorFromHex(String hexColor) {
+      hexColor = hexColor.toUpperCase().replaceAll("#", "");
+      if (hexColor.length == 6) {
+        hexColor = "FF" + hexColor;
+      }
+      return int.parse(hexColor, radix: 16);
+    }
+
+    final Color color = Color(_getColorFromHex(colorHex));
+
+    return Stack(
+      children: [
+        Image.network('https://example.com/image.png', fit: BoxFit.cover),
+        Positioned(
+          bottom: 16,
+          right: 16,
+          child: ClipOval(
+            child: Container(
+              color: color,
+              width: 64,
+              height: 64,
+            ),
+          ),
+        ),
+      ],
+    );
+
+  }
 }

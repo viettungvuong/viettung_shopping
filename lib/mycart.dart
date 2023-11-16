@@ -9,34 +9,42 @@ import 'dart:core';
 class MyCartPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List<ProductInCart> cart= ref.watch(cartProvider);
+    List<ProductInCart> cart = ref.watch(cartProvider);
 
     return Scaffold(
-      //show the price on the top
-      appBar: AppBar(
-        title: Text('My App'),
-        actions: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Container(
+          margin: EdgeInsets.all(50),
+          child: Row(
             children: [
-              Text('Total: ', style: TextStyle(fontWeight: FontWeight.bold),),
-              Text('\$${cart.fold(0.0, (previousValue, element) => previousValue + element.calculatePrice())}'),
+              Text(
+                'Total: ',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+              Spacer(),
+              Text(
+                  '\$${cart.fold(0.0, (previousValue, element) => previousValue + element.calculatePrice())}', style: TextStyle(fontSize: 20)),
             ],
           ),
-        ],
-      ),
+        ),
+        (cart.isNotEmpty)
+            ? ListView.builder(
+                itemCount: cart.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  final cartItem = cart[index];
 
-      body: (cart.isNotEmpty) ? ListView.builder(
-        itemCount: cart.length,
-        itemBuilder: (context, index) {
-          final cartItem = cart[index];
-
-          return ProductCartView(product: cartItem, index: index);
-        },
-      ):Center(
-        child: Text('Your cart is empty'),
-      ),
-
-    );
+                  return ProductCartView(product: cartItem, index: index);
+                },
+              )
+            : Expanded(
+                child: Center(
+                  child: Text('Your cart is empty'),
+                ),
+              )
+      ],
+    ));
   }
 }
