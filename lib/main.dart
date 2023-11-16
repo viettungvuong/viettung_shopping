@@ -9,7 +9,21 @@ import 'package:provider/provider.dart';
 
 import 'model/product.dart';
 
-void main() {
+List<Product> products = [];
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final String productDataString = await rootBundle.loadString('data/shoes.json');
+  final List<dynamic> productData = jsonDecode(productDataString);
+
+  List<Product> products = [];
+
+  for (Map<String, dynamic> json in productData) {
+    Product product = Product.fromJson(json);
+    products.add(product);
+  }
+
   runApp(ProviderScope(child: MyApp()));
 }
 
@@ -55,34 +69,16 @@ class MyHomePage extends ConsumerStatefulWidget {
 }
 
 class _MyHomePageState extends ConsumerState<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   @override
-  Future<void> initState() async {
+  void initState() {
     super.initState();
 
-    final String productDataString = await rootBundle.loadString('data/shoes.json');
-    final List<dynamic> productData = jsonDecode(productDataString);
-
-    List<Product> products = [];
-
-    for (Map<String, dynamic> json in productData) {
-      Product product = Product.fromJson(json);
-      products.add(product);
-    }
-
-    setState(() {
-      ref.watch(productProvider.notifier).update((state) => state=products);
-    });
 
     loadCartItems().then((cartItems) {
       setState(() {
+        ref.watch(productProvider.notifier).update((state) => state=products); //product list
+
         ref.watch(cartProvider.notifier).update((state) => state=cartItems);
       });
     });
@@ -90,6 +86,8 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return OurProductPage(products: ref.watch(productProvider));
   }
 }
