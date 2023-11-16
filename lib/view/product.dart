@@ -71,6 +71,8 @@ class _ProductViewState extends State<ProductView> {
 
                         // add to cart provider
                         ref.watch(cartProvider.notifier).update((state) => state=cartItems);
+
+                        saveCartItems(cartItems);
                       }
                     });
 

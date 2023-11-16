@@ -56,6 +56,8 @@ class _ProductCartViewState extends State<ProductCartView> {
                     }
 
                     ref.watch(cartProvider.notifier).update((state) => state=cartItems);
+
+                    saveCartItems(cartItems);
                   });
                 },
                 label: Text("Decrease"),
@@ -72,6 +74,8 @@ class _ProductCartViewState extends State<ProductCartView> {
                     cartItems[widget.index] = productController.product;
 
                     ref.watch(cartProvider.notifier).update((state) => state=cartItems);
+
+                    saveCartItems(cartItems);
                   });
                 },
                 label: Text("Increase"),
@@ -92,6 +96,8 @@ class _ProductCartViewState extends State<ProductCartView> {
 
                     // Update the cart provider
                     ref.watch(cartProvider.notifier).update((state) => state=cartItems);
+
+                    saveCartItems(cartItems);
                   });
                 },
               ),
