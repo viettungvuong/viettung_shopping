@@ -3,17 +3,17 @@ import 'dart:core';
 
 import 'model/product.dart';
 
-class AppController{
-  static AppController? _instance;
+class AppRepository{
+  static AppRepository? _instance;
 
-  factory AppController() {
+  factory AppRepository() {
     if (_instance == null) {
-      _instance = AppController._internal();
+      _instance = AppRepository._internal();
     }
     return _instance!!;
   }
 
-  AppController._internal(); //private constructor
+  AppRepository._internal(); //private constructor
 
   List<Product> products = []; //list of selling products
   List<ProductInCart> _currentCart = []; //cart
