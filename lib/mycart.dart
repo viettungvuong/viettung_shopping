@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:golden_owl_shopping/model/product.dart';
+import 'package:golden_owl_shopping/view/productInCart.dart';
 
 class MyCartPage extends StatelessWidget {
   final List<ProductInCart> cartItems;
@@ -20,12 +21,7 @@ class MyCartPage extends StatelessWidget {
         itemBuilder: (context, index) {
           final cartItem = cartItems[index];
 
-          return ListTile(
-            leading: Image.network(cartItem.productImage),
-            title: Text(cartItem.productName),
-            subtitle: Text('x${cartItem.quantity}'),
-            trailing: Text('\$${cartItem.productPrice}'),
-          );
+          return ProductCartView(product: cartItem);
         },
       ),
       bottomNavigationBar: BottomAppBar(
@@ -37,15 +33,11 @@ class MyCartPage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Total'),
-                  Text('\$${cartItems.fold(0, (previousValue, element) => previousValue + element.productPrice)}'),
+                  Text('Total: ', style: TextStyle(fontWeight: FontWeight.bold),),
+                  Text('\$${cartItems.fold(0.0, (previousValue, element) => previousValue + element.calculatePrice())}'),
                 ],
               ),
               SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {},
-                child: Text('Checkout'),
-              ),
             ],
           ),
         ),

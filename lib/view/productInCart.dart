@@ -25,7 +25,6 @@ class _ProductCartViewState extends State<ProductCartView> {
     productController = ProductInCartController(widget.product);
   }
 
-
   @override
   Widget build(BuildContext context) {
     return ListTile(
