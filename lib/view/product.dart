@@ -34,7 +34,7 @@ class _ProductViewState extends State<ProductView> {
     return Consumer(
       builder: (context, ref, child) {
         return ListTile(
-          leading: productController.backgroundColor(widget.product.colorHex),
+          // leading: productController.backgroundColor(widget.product.colorHex),
           title: Text(widget.product.name),
           subtitle: Text(widget.product.description),
           trailing: isInCart
