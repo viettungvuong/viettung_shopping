@@ -47,6 +47,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
   void initState() {
     super.initState();
     productFuture = loadProductData();
+    loadCartData();
   }
 
   Future<List<ProductInCart>> loadCartData() async {

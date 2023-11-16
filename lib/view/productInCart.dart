@@ -52,7 +52,7 @@ class _ProductCartViewState extends State<ProductCartView> {
                   SizedBox(
                     height: 10,
                   ),
-                  Text('\$${productController.product.calculatePrice()}',
+                  Text('\$${productController.product.calculatePrice().roundToDouble()}',
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 12))
                 ]),

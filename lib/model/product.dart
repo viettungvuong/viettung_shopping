@@ -47,6 +47,11 @@ class ProductInCart extends Product with ChangeNotifier{
 
   Map<String, dynamic> toJson() => {
     'id': id,
+    'image': image,
+    'name': name,
+    'description': description,
+    'price': price,
+    'color': colorHex,
     'quantity': _quantity
   };
 

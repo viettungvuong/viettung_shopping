@@ -24,7 +24,8 @@ class CartNotifier extends StateNotifier<List<ProductInCart>> {
   }
 
   void update(List<ProductInCart> cart){
-    state = cart;
+    List.from(state)..clear();
+    state = List.from(state)..addAll(cart);
   }
 }
 
@@ -35,8 +36,8 @@ final productProvider = StateProvider<List<Product>>((ref) {
 //save for persistence
 Future<void> saveCartItems(List<ProductInCart> cart) async {
   final prefs = await SharedPreferences.getInstance();
-  print(cart);
   final cartItemsJson = jsonEncode(cart);
+  print(cartItemsJson);
   await prefs.setString('cart_items', cartItemsJson);
 }
 

@@ -17,7 +17,7 @@ class _MyCartPageState extends ConsumerState<MyCartPage> {
   void initState() {
     super.initState();
 
-    cartFuture = loadProductData();
+    loadProductData();
   }
 
   Future<List<ProductInCart>> loadProductData() async {
@@ -55,7 +55,7 @@ class _MyCartPageState extends ConsumerState<MyCartPage> {
                 ),
                 Spacer(),
                 Text(
-                  '\$${totalPrice}',
+                  '\$${totalPrice.roundToDouble()}',
                   style: TextStyle(fontSize: 20),
                 ),
               ],
