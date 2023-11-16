@@ -33,7 +33,7 @@ class Product{
 
 }
 
-class ProductInCart extends Product{
+class ProductInCart extends Product with ChangeNotifier{
   int _quantity = 1;
 
   ProductInCart(super.id, super.image, super.name, super.description, super.price, super.colorHex);

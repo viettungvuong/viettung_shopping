@@ -22,7 +22,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -48,6 +47,23 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
   void initState() {
     super.initState();
     productFuture = loadProductData();
+  }
+
+  Future<List<ProductInCart>> loadCartData() async {
+    try {
+      List<ProductInCart> loadedCart = await loadCartItems();
+      print(loadedCart);
+
+      setState(() {
+        ref.watch(cartNotifierProvider.notifier).update(loadedCart);
+      });
+
+      return loadedCart;
+    } catch (e) {
+      print('Error loading product data: $e');
+      return [];
+      // Handle the error accordingly
+    }
   }
 
   Future<List<Product>> loadProductData() async {

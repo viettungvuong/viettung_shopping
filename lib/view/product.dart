@@ -81,13 +81,11 @@ class _ProductViewState extends State<ProductView> {
                       // Add the product to the cart
                       isInCart = true;
 
-                      List<ProductInCart> cartItems = ref.watch(cartProvider);
-                      cartItems.add(ProductInCart.withProduct(widget.product));
+                      //add to cart
+                      final cartItems = ref.watch(cartNotifierProvider.notifier);
+                      cartItems.addToCart(ProductInCart.withProduct(widget.product));
 
-                      // add to cart provider
-                      ref.watch(cartProvider.notifier).update((state) => state=cartItems);
-
-                      saveCartItems(cartItems);
+                      saveCartItems(ref.watch(cartNotifierProvider));
                     }
                   });
 

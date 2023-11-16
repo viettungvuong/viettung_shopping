@@ -8,9 +8,25 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'model/product.dart';
 
-final cartProvider = StateProvider<List<ProductInCart>>((ref) {
-  return [];
-});
+final cartNotifierProvider = StateNotifierProvider<CartNotifier, List<ProductInCart>>(
+      (ref) => CartNotifier(),
+);
+
+class CartNotifier extends StateNotifier<List<ProductInCart>> {
+  CartNotifier() : super([]);
+
+  void removeFromCart(ProductInCart item) {
+    state = List.from(state)..remove(item);
+  }
+
+  void addToCart(ProductInCart item){
+    state = List.from(state)..add(item);
+  }
+
+  void update(List<ProductInCart> cart){
+    state = cart;
+  }
+}
 
 final productProvider = StateProvider<List<Product>>((ref) {
   return [];
@@ -19,6 +35,7 @@ final productProvider = StateProvider<List<Product>>((ref) {
 //save for persistence
 Future<void> saveCartItems(List<ProductInCart> cart) async {
   final prefs = await SharedPreferences.getInstance();
+  print(cart);
   final cartItemsJson = jsonEncode(cart);
   await prefs.setString('cart_items', cartItemsJson);
 }
@@ -27,6 +44,7 @@ Future<void> saveCartItems(List<ProductInCart> cart) async {
 Future<List<ProductInCart>> loadCartItems() async {
   final prefs = await SharedPreferences.getInstance();
   final cartItemsJson = prefs.getString('cart_items');
+  print(cartItemsJson);
 
   if (cartItemsJson != null) {
     final cartItems = jsonDecode(cartItemsJson) as List<dynamic>;

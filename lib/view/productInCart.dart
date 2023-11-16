@@ -31,7 +31,7 @@ class _ProductCartViewState extends State<ProductCartView> {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, child) {
-        final cartItems = ref.watch(cartProvider);
+        final cart = ref.watch(cartNotifierProvider);
 
         return ListTile(
           leading: SizedBox(
@@ -39,8 +39,7 @@ class _ProductCartViewState extends State<ProductCartView> {
             height: 150,
             child: productController.backgroundColor(widget.product.colorHex),
           ),
-          title:
-          Container(
+          title: Container(
             margin: EdgeInsets.symmetric(vertical: 10),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,9 +49,12 @@ class _ProductCartViewState extends State<ProductCartView> {
                     widget.product.name,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text('\$${productController.product.calculatePrice()}',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12))
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 12))
                 ]),
           ),
           subtitle: Row(
@@ -65,19 +67,19 @@ class _ProductCartViewState extends State<ProductCartView> {
                         onTap: () {
                           setState(() {
                             productController.decreaseQuantity();
-                            cartItems[widget.index] = productController.product;
+
+                            cart[widget.index] = productController.product;
+
+                            ref.watch(cartNotifierProvider.notifier).update(cart);
 
                             //remove from cart if below 0
                             if (widget.product.getQuantity() <= 0) {
-                              cartItems.remove(widget.product);
-                              // Update the cart provider
+                              final cartItems =
+                                  ref.watch(cartNotifierProvider.notifier);
+                              cartItems.removeFromCart(widget.product);
                             }
 
-                            ref
-                                .watch(cartProvider.notifier)
-                                .update((state) => state = cartItems);
-
-                            saveCartItems(cartItems);
+                            saveCartItems(ref.watch(cartNotifierProvider));
                           });
                         },
                         child: SizedBox(
@@ -90,7 +92,10 @@ class _ProductCartViewState extends State<ProductCartView> {
                 width: 20,
               ),
 
-              Text('${productController.product.getQuantity()}', style: TextStyle(fontSize: 15),),
+              Text(
+                '${productController.product.getQuantity()}',
+                style: TextStyle(fontSize: 15),
+              ),
 
               SizedBox(
                 width: 20,
@@ -104,13 +109,11 @@ class _ProductCartViewState extends State<ProductCartView> {
                         onTap: () {
                           setState(() {
                             productController.increaseQuantity();
-                            cartItems[widget.index] = productController.product;
+                            cart[widget.index] = productController.product;
 
-                            ref
-                                .watch(cartProvider.notifier)
-                                .update((state) => state = cartItems);
+                            ref.watch(cartNotifierProvider.notifier).update(cart);
 
-                            saveCartItems(cartItems);
+                            saveCartItems(ref.watch(cartNotifierProvider));
                           });
                         },
                         child: SizedBox(
@@ -128,21 +131,21 @@ class _ProductCartViewState extends State<ProductCartView> {
                       child: InkWell(
                         onTap: () {
                           setState(() {
-                            // Remove the product from the cart
-                            cartItems.removeAt(widget.index);
+                            final cartItems =
+                                ref.watch(cartNotifierProvider.notifier);
+                            cartItems.removeFromCart(widget.product);
 
-                            // Update the cart provider
-                            ref
-                                .watch(cartProvider.notifier)
-                                .update((state) => state = cartItems);
-
-                            saveCartItems(cartItems);
+                            saveCartItems(ref.watch(cartNotifierProvider));
                           });
                         },
                         child: SizedBox(
                             width: 30,
                             height: 30,
-                            child: Icon(Icons.delete, size: 20, color: black,)),
+                            child: Icon(
+                              Icons.delete,
+                              size: 20,
+                              color: black,
+                            )),
                       ))),
             ],
           ),

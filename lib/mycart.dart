@@ -6,43 +6,78 @@ import 'package:golden_owl_shopping/view/productInCart.dart';
 import 'package:provider/provider.dart';
 import 'dart:core';
 
-class MyCartPage extends ConsumerWidget {
+class MyCartPage extends ConsumerStatefulWidget {
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _MyCartPageState createState() => _MyCartPageState();
+}
+
+class _MyCartPageState extends ConsumerState<MyCartPage> {
+
+  @override
+  void initState() {
+    super.initState();
+
+    cartFuture = loadProductData();
+  }
+
+  Future<List<ProductInCart>> loadProductData() async {
+    try {
+      List<ProductInCart> loadedCart = await loadCartItems();
+
+      setState(() {
+        ref.watch(cartNotifierProvider.notifier).update(loadedCart);
+      });
+
+      return loadedCart;
+    } catch (e) {
+      print('Error loading product data: $e');
+      return [];
+      // Handle the error accordingly
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final List<ProductInCart> cart = ref.watch(cartNotifierProvider);
+    double totalPrice = cart.fold(0.0, (previousValue, element) => previousValue + element.calculatePrice());
+
     return Scaffold(
-        body: Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Container(
-          margin: EdgeInsets.all(50),
-          child: Row(
-            children: [
-              Text(
-                'Total: ',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-              Spacer(),
-              Text(
-                  '\$${ref.watch(cartProvider).fold(0.0, (previousValue, element) => previousValue + element.calculatePrice())}',
-                  style: TextStyle(fontSize: 20)),
-            ],
-          ),
-        ),
-        (ref.watch(cartProvider).length > 0)
-            ? Expanded(
-                child: ListView.builder(
-                itemCount: ref.watch(cartProvider).length,
-                itemBuilder: (context, index) {
-                  final cartItem = ref.watch(cartProvider)[index];
-                  return ProductCartView(product: cartItem, index: index);
-                },
-              ))
-            : Expanded(
-                child: Center(
-                  child: Text('Your cart is empty'),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            margin: EdgeInsets.all(50),
+            child: Row(
+              children: [
+                Text(
+                  'Total: ',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
-              )
-      ],
-    ));
+                Spacer(),
+                Text(
+                  '\$${totalPrice}',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ],
+            ),
+          ),
+          (cart.length > 0)
+              ? Expanded(
+                  child: ListView.builder(
+                    itemCount: cart.length,
+                    itemBuilder: (context, index) {
+                      final cartItem = cart[index];
+                      return ProductCartView(product: cartItem, index: index);
+                    },
+                  ),
+                )
+              : Expanded(
+                  child: Center(
+                    child: Text('Your cart is empty'),
+                  ),
+                ),
+        ],
+      ),
+    );
   }
 }
