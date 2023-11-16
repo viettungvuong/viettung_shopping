@@ -23,6 +23,7 @@ class _OurProductPageState extends State<OurProductPage> {
     super.initState();
 
     products = widget.products;
+    print("Products size: "+products.length.toString());
   }
 
   @override

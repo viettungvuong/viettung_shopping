@@ -9,25 +9,8 @@ import 'package:provider/provider.dart';
 
 import 'model/product.dart';
 
-List<Product> products = [];
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  final String productDataString = await rootBundle.loadString('data/shoes.json');
-  final Map<String, dynamic> jsonData = jsonDecode(productDataString);
-
-  List<Product> products = [];
-
-  if (jsonData.containsKey('shoes')) {
-    List<dynamic> shoesData = jsonData['shoes'];
-    for (Map<String, dynamic> shoeJson in shoesData) {
-      Product product = Product.fromJson(shoeJson);
-      products.add(product);
-    }
-  }
-
-  print(products.length);
 
   runApp(ProviderScope(child: MyApp()));
 }
@@ -59,26 +42,57 @@ class MyHomePage extends ConsumerStatefulWidget {
 }
 
 class _MyHomePageState extends ConsumerState<MyHomePage> {
+  Future<List<Product>>? productFuture;
 
   @override
   void initState() {
     super.initState();
+    productFuture = loadProductData();
+  }
 
-    ref.watch(productProvider.notifier).update((state) => state=products); //product list
+  Future<List<Product>> loadProductData() async {
+    try {
+      final String productDataString = await rootBundle.loadString('data/shoes.json');
+      final Map<String, dynamic> jsonData = jsonDecode(productDataString);
 
-    loadCartItems().then((cartItems) {
+      List<Product> loadedProducts = [];
+
+      if (jsonData.containsKey('shoes')) {
+        List<dynamic> shoesData = jsonData['shoes'];
+        for (Map<String, dynamic> shoeJson in shoesData) {
+          Product product = Product.fromJson(shoeJson);
+          loadedProducts.add(product);
+        }
+      }
+
       setState(() {
-
-
-        print(ref.watch(productProvider).length);
-
-        ref.watch(cartProvider.notifier).update((state) => state=cartItems);
+        ref.watch(productProvider.notifier).update((state) => state = loadedProducts);
       });
-    });
+
+      return loadedProducts;
+    } catch (e) {
+      print('Error loading product data: $e');
+      return [];
+      // Handle the error accordingly
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return OurProductPage(products: ref.watch(productProvider));
+    return FutureBuilder<List<Product>>(
+      future: productFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator(); // Or any loading indicator
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Text('No data available');
+        } else {
+          // Use the data to build your UI
+          return OurProductPage(products: snapshot.data!);
+        }
+      },
+    );
   }
 }
