@@ -32,8 +32,7 @@ class _ProductViewState extends State<ProductView> {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, child) {
-        return Card(
-          elevation: 5,
+        return Container(
           margin: EdgeInsets.all(10),
           child: Column(
             children: [

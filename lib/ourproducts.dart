@@ -20,35 +20,38 @@ class _OurProductPageState extends State<OurProductPage> {
   late List<Product> products;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
 
     products = widget.products;
-    print("Products size: "+products.length.toString());
+    print("Products size: " + products.length.toString());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Products'),
-        actions: [
-          ElevatedButton(onPressed: (){
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MyCartPage()),
-            );
-          }, child: Icon(Icons.shopping_cart))
-        ],
-      ),
-      body: ListView.builder(
-        itemCount: products.length,
-        itemBuilder: (context, index) {
-          final product = products[index];
-          return
-            ProductView(product: product,);
-        },
-      ),
-    );
+        body: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+          Container(
+            margin: EdgeInsets.only(top: 50, bottom: 10, left: 30),
+            child: Text(
+              'Our products',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: products.length,
+              itemBuilder: (context, index) {
+                final product = products[index];
+                return ProductView(
+                  product: product,
+                );
+              },
+            ),
+          )
+        ]));
   }
 }
