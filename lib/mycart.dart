@@ -24,6 +24,7 @@ class MyCartPage extends StatelessWidget {
           return ProductCartView(product: cartItem);
         },
       ),
+      //show the price on the top
       bottomNavigationBar: BottomAppBar(
         child: Container(
           padding: EdgeInsets.all(16),
