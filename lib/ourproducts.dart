@@ -35,10 +35,23 @@ class _OurProductPageState extends State<OurProductPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
           Container(
-            margin: EdgeInsets.only(top: 50, bottom: 10, left: 30),
-            child: Text(
-              'Our products',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            margin: EdgeInsets.all(50),
+            child: Row(
+              children: [
+                Text(
+                  'Our products',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+                Spacer(),
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MyCartPage()),
+                      );
+                    },
+                    child: Icon(Icons.shopping_cart))
+              ],
             ),
           ),
           Expanded(
