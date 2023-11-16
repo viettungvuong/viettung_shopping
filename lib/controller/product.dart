@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../model/product.dart';
 
@@ -8,7 +9,6 @@ class ProductController {
   final Product product;
 
   ProductController(this.product);
-
 
   // image with background color
   Container backgroundColor(String colorHex) {
@@ -23,15 +23,18 @@ class ProductController {
     final Color color = Color(_getColorFromHex(colorHex));
 
     return Container(
-      margin: EdgeInsets.all(30),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.all(Radius.circular(20)),
-      ),
-      child: Image.network(
-        product.image,
-      ),
-    );
+        margin: EdgeInsets.all(30),
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        child: RotationTransition(
+            turns: new AlwaysStoppedAnimation(-15 / 360),
+            child: Center(
+              child: Image.network(
+                product.image,
+              ),
+            )));
   }
 }
 
@@ -49,7 +52,7 @@ class ProductInCartController {
     product.updateQuantity(product.getQuantity() - 1);
   }
 
-  Stack backgroundColor(String colorHex){
+  Stack backgroundColor(String colorHex) {
     int _getColorFromHex(String hexColor) {
       hexColor = hexColor.toUpperCase().replaceAll("#", "");
       if (hexColor.length == 6) {
@@ -62,20 +65,26 @@ class ProductInCartController {
 
     return Stack(
       children: [
-        Image.network('https://example.com/image.png', fit: BoxFit.cover),
-        Positioned(
-          bottom: 16,
-          right: 16,
-          child: ClipOval(
-            child: Container(
-              color: color,
-              width: 64,
-              height: 64,
-            ),
+        Center(
+          child: CircleAvatar(
+            radius: 60.0,
+            backgroundColor: color,
           ),
+        ),
+        Container(
+          child: RotationTransition(
+              turns: new AlwaysStoppedAnimation(-25 / 360),
+              child: Center(
+                child: Image.network(
+                  product.image,
+                  width: 120,
+                  height: 120,
+                  fit: BoxFit.fitWidth,
+                ),
+              )),
+          width: 500,
         ),
       ],
     );
-
   }
 }

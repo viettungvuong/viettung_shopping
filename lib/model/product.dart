@@ -34,7 +34,7 @@ class Product{
 }
 
 class ProductInCart extends Product{
-  int _quantity = 0;
+  int _quantity = 1;
 
   ProductInCart(super.id, super.image, super.name, super.description, super.price, super.colorHex);
 

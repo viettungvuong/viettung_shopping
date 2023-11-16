@@ -9,8 +9,6 @@ import 'dart:core';
 class MyCartPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List<ProductInCart> cart = ref.watch(cartProvider);
-
     return Scaffold(
         body: Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -25,20 +23,20 @@ class MyCartPage extends ConsumerWidget {
               ),
               Spacer(),
               Text(
-                  '\$${cart.fold(0.0, (previousValue, element) => previousValue + element.calculatePrice())}', style: TextStyle(fontSize: 20)),
+                  '\$${ref.watch(cartProvider).fold(0.0, (previousValue, element) => previousValue + element.calculatePrice())}',
+                  style: TextStyle(fontSize: 20)),
             ],
           ),
         ),
-        (cart.isNotEmpty)
-            ? ListView.builder(
-                itemCount: cart.length,
-                shrinkWrap: true,
+        (ref.watch(cartProvider).length > 0)
+            ? Expanded(
+                child: ListView.builder(
+                itemCount: ref.watch(cartProvider).length,
                 itemBuilder: (context, index) {
-                  final cartItem = cart[index];
-
+                  final cartItem = ref.watch(cartProvider)[index];
                   return ProductCartView(product: cartItem, index: index);
                 },
-              )
+              ))
             : Expanded(
                 child: Center(
                   child: Text('Your cart is empty'),

@@ -11,11 +11,8 @@ class ProductCartView extends StatefulWidget {
   final ProductInCart product;
   final int index;
 
-  const ProductCartView({
-    Key? key,
-    required this.product,
-    required this.index
-  }) : super(key: key);
+  const ProductCartView({Key? key, required this.product, required this.index})
+      : super(key: key);
 
   @override
   _ProductCartViewState createState() => _ProductCartViewState();
@@ -37,73 +34,118 @@ class _ProductCartViewState extends State<ProductCartView> {
         final cartItems = ref.watch(cartProvider);
 
         return ListTile(
-          leading: productController.backgroundColor(widget.product.colorHex),
-          title: Text(widget.product.name),
+          leading: SizedBox(
+            width: 140,
+            height: 150,
+            child: productController.backgroundColor(widget.product.colorHex),
+          ),
+          title:
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 10),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                // Align children to the start
+                children: [
+                  Text(
+                    widget.product.name,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  ),
+                  SizedBox(height: 10,),
+                  Text('\$${productController.product.calculatePrice()}',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12))
+                ]),
+          ),
           subtitle: Row(
             children: [
               // Increase quantity button
-              ElevatedButton.icon(
-                icon: Icon(Icons.remove),
-                onPressed: () {
-                  setState(() {
-                    productController.decreaseQuantity();
-                    cartItems[widget.index] = productController.product;
+              ClipOval(
+                  child: Material(
+                      color: gray,
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            productController.decreaseQuantity();
+                            cartItems[widget.index] = productController.product;
 
-                    //remove from cart if below 0
-                    if (widget.product.getQuantity()<=0){
-                      cartItems.remove(widget.product);
-                      // Update the cart provider
-                    }
+                            //remove from cart if below 0
+                            if (widget.product.getQuantity() <= 0) {
+                              cartItems.remove(widget.product);
+                              // Update the cart provider
+                            }
 
-                    ref.watch(cartProvider.notifier).update((state) => state=cartItems);
+                            ref
+                                .watch(cartProvider.notifier)
+                                .update((state) => state = cartItems);
 
-                    saveCartItems(cartItems);
-                  });
-                },
-                label: Text("Decrease"),
+                            saveCartItems(cartItems);
+                          });
+                        },
+                        child: SizedBox(
+                            width: 30,
+                            height: 30,
+                            child: Icon(Icons.remove, size: 20)),
+                      ))),
+
+              SizedBox(
+                width: 20,
               ),
 
-              Text('x${productController.product.getQuantity()}'),
+              Text('${productController.product.getQuantity()}', style: TextStyle(fontSize: 15),),
+
+              SizedBox(
+                width: 20,
+              ),
 
               // Decrease quantity button
-              ElevatedButton.icon(
-                icon: Icon(Icons.add),
-                onPressed: () {
-                  setState(() {
-                    productController.increaseQuantity();
-                    cartItems[widget.index] = productController.product;
+              ClipOval(
+                  child: Material(
+                      color: gray,
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            productController.increaseQuantity();
+                            cartItems[widget.index] = productController.product;
 
-                    ref.watch(cartProvider.notifier).update((state) => state=cartItems);
+                            ref
+                                .watch(cartProvider.notifier)
+                                .update((state) => state = cartItems);
 
-                    saveCartItems(cartItems);
-                  });
-                },
-                label: Text("Increase"),
-              ),
+                            saveCartItems(cartItems);
+                          });
+                        },
+                        child: SizedBox(
+                            width: 30,
+                            height: 30,
+                            child: Icon(Icons.add, size: 20)),
+                      ))),
 
-              SizedBox(width: 20),
+              Spacer(),
 
               // Delete button (delete from cart)
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: yellow,
-                ),
-                child: Icon(Icons.delete, color: black),
-                onPressed: () {
-                  setState(() {
-                    // Remove the product from the cart
-                    cartItems.removeAt(widget.index);
+              ClipOval(
+                  child: Material(
+                      color: yellow,
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            // Remove the product from the cart
+                            cartItems.removeAt(widget.index);
 
-                    // Update the cart provider
-                    ref.watch(cartProvider.notifier).update((state) => state=cartItems);
+                            // Update the cart provider
+                            ref
+                                .watch(cartProvider.notifier)
+                                .update((state) => state = cartItems);
 
-                    saveCartItems(cartItems);
-                  });
-                },
-              ),
+                            saveCartItems(cartItems);
+                          });
+                        },
+                        child: SizedBox(
+                            width: 30,
+                            height: 30,
+                            child: Icon(Icons.delete, size: 20, color: black,)),
+                      ))),
             ],
           ),
-          trailing: Text('\$${productController.product.calculatePrice()}'),
         );
       },
     );
