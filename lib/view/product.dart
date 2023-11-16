@@ -51,39 +51,43 @@ class _ProductViewState extends State<ProductView> {
                     style: TextStyle(fontSize: 14)),
               ),
               Padding(
-                padding: const EdgeInsets.all(5),
-                child: Text('\$${widget.product.price}',
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              ),
-              ref.watch(cartNotifierProvider).any((element) =>
-                      element.name == widget.product.name) //check if in cart
-                  ? Row(
+                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(5),
+                      child: Text('\$${widget.product.price}',
+                          style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    ),
+
+                    Spacer(),
+
+                    ref.watch(cartNotifierProvider).any((element) =>
+                    element.name == widget.product.name) //check if in cart
+                        ? Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Container(
-                          padding: EdgeInsets.all(8.0),
-                          decoration: BoxDecoration(
-                            color: yellow,
-                            borderRadius: BorderRadius.circular(4.0),
-                          ),
-                          child: Row(
-                            children: [
-                              Text(
-                                'Already in cart',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                              Icon(Icons.check, color: Colors.black),
-                            ],
-                          ),
-                        ),
+                        ClipOval(
+                            child: Material(
+                                color: yellow,
+                                child: InkWell(
+                                  child: SizedBox(
+                                      width: 40,
+                                      height: 40,
+                                      child: Icon(
+                                        Icons.check,
+                                        size: 20,
+                                        color: black,
+                                      )),
+                                ))),
                       ],
                     )
-                  : ElevatedButton(
+                        : ElevatedButton(
                       onPressed: () {
                         setState(() {
                           //add to cart
-                              ref.watch(cartNotifierProvider.notifier).addToCart(ProductInCart.withProduct(widget.product));
+                          ref.watch(cartNotifierProvider.notifier).addToCart(ProductInCart.withProduct(widget.product));
                         });
                       },
                       style: ElevatedButton.styleFrom(primary: yellow),
@@ -92,6 +96,9 @@ class _ProductViewState extends State<ProductView> {
                         style: TextStyle(color: Colors.black),
                       ),
                     ),
+                  ],
+                )
+              )
             ],
           ),
         );
