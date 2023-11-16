@@ -33,56 +33,73 @@ class _ProductViewState extends State<ProductView> {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, child) {
-        return ListTile(
-          // leading: productController.backgroundColor(widget.product.colorHex),
-          title: Text(widget.product.name),
-          subtitle: Text(widget.product.description),
-          trailing: isInCart
-              ? Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        color: yellow,
-                        borderRadius: BorderRadius.circular(4.0),
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Already in cart',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          Icon(Icons.check, color: Colors.black),
-                        ],
-                      ),
+        return Card(
+          elevation: 5,
+          margin: EdgeInsets.all(10),
+          child: Column(
+            children: [
+              // productController.backgroundColor(widget.product.colorHex),
+              productController.backgroundColor(widget.product.colorHex),
+              Padding(
+                padding: const EdgeInsets.all(18),
+                child: Text(widget.product.name, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(18),
+                child: Text(widget.product.description, style: TextStyle(fontSize: 14)),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(5),
+                child: Text('\$${widget.product.price}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              ),
+              isInCart
+                  ? Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      color: yellow,
+                      borderRadius: BorderRadius.circular(4.0),
                     ),
-                  ],
-                )
-              : ElevatedButton(
-                  onPressed: (){
-                    setState(() {
-                      if (!isInCart) {
-                        // Add the product to the cart
-                        isInCart = true;
-
-                        List<ProductInCart> cartItems = ref.watch(cartProvider);
-                        cartItems.add(ProductInCart.withProduct(widget.product));
-
-                        // add to cart provider
-                        ref.watch(cartProvider.notifier).update((state) => state=cartItems);
-
-                        saveCartItems(cartItems);
-                      }
-                    });
-
-                  },
-                  style: ElevatedButton.styleFrom(primary: yellow),
-                  child: Text(
-                    'Add to cart',
-                    style: TextStyle(color: Colors.black),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Already in cart',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        Icon(Icons.check, color: Colors.black),
+                      ],
+                    ),
                   ),
+                ],
+              )
+                  : ElevatedButton(
+                onPressed: (){
+                  setState(() {
+                    if (!isInCart) {
+                      // Add the product to the cart
+                      isInCart = true;
+
+                      List<ProductInCart> cartItems = ref.watch(cartProvider);
+                      cartItems.add(ProductInCart.withProduct(widget.product));
+
+                      // add to cart provider
+                      ref.watch(cartProvider.notifier).update((state) => state=cartItems);
+
+                      saveCartItems(cartItems);
+                    }
+                  });
+
+                },
+                style: ElevatedButton.styleFrom(primary: yellow),
+                child: Text(
+                  'Add to cart',
+                  style: TextStyle(color: Colors.black),
                 ),
+              ),
+            ],
+          ),
         );
       },
     );
