@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:golden_owl_shopping/mycart.dart';
 import 'package:golden_owl_shopping/view/product.dart';
 
+import 'colors.dart';
 import 'model/product.dart';
 
 class OurProductPage extends StatefulWidget {
@@ -30,41 +31,58 @@ class _OurProductPageState extends State<OurProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
+      body: Stack(
+        children: [
+          Positioned(
+            top: -50,
+            left: -90,
+            child: Container(
+              width: 200,
+              height: 200,
+              decoration: BoxDecoration(
+                color: yellow,
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+
+        Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-          Container(
-            margin: EdgeInsets.all(50),
-            child: Row(
-              children: [
-                Text(
-                  'Our products',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              Container(
+                margin: EdgeInsets.all(50),
+                child: Row(
+                  children: [
+                    Text(
+                      'Our products',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                    Spacer(),
+                    ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => MyCartPage()),
+                          );
+                        },
+                        child: Icon(Icons.shopping_cart))
+                  ],
                 ),
-                Spacer(),
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MyCartPage()),
-                      );
-                    },
-                    child: Icon(Icons.shopping_cart))
-              ],
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: products.length,
-              itemBuilder: (context, index) {
-                final product = products[index];
-                return ProductView(
-                  product: product,
-                );
-              },
-            ),
-          )
-        ]));
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: products.length,
+                  itemBuilder: (context, index) {
+                    final product = products[index];
+                    return ProductView(
+                      product: product,
+                    );
+                  },
+                ),
+              )
+            ]),
+        ],
+      ));
   }
 }

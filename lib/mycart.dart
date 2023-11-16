@@ -6,6 +6,8 @@ import 'package:golden_owl_shopping/view/productInCart.dart';
 import 'package:provider/provider.dart';
 import 'dart:core';
 
+import 'colors.dart';
+
 class MyCartPage extends ConsumerStatefulWidget {
   @override
   _MyCartPageState createState() => _MyCartPageState();
@@ -42,42 +44,58 @@ class _MyCartPageState extends ConsumerState<MyCartPage> {
     double totalPrice = cart.fold(0.0, (previousValue, element) => previousValue + element.calculatePrice());
 
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+      body: Stack(
         children: [
-          Container(
-            margin: EdgeInsets.all(50),
-            child: Row(
-              children: [
-                Text(
-                  'Total: ',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                ),
-                Spacer(),
-                Text(
-                  '\$${totalPrice.roundToDouble()}',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ],
+          Positioned(
+            top: -50,
+            left: -90,
+            child: Container(
+              width: 200,
+              height: 200,
+              decoration: BoxDecoration(
+                color: yellow,
+                shape: BoxShape.circle,
+              ),
             ),
           ),
-          (cart.length > 0)
-              ? Expanded(
-                  child: ListView.builder(
-                    itemCount: cart.length,
-                    itemBuilder: (context, index) {
-                      final cartItem = cart[index];
-                      return ProductCartView(product: cartItem, index: index);
-                    },
-                  ),
-                )
-              : Expanded(
-                  child: Center(
-                    child: Text('Your cart is empty'),
-                  ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                margin: EdgeInsets.all(50),
+                child: Row(
+                  children: [
+                    Text(
+                      'Total: ',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                    Spacer(),
+                    Text(
+                      '\$${totalPrice.roundToDouble()}',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ],
                 ),
+              ),
+              (cart.length > 0)
+                  ? Expanded(
+                child: ListView.builder(
+                  itemCount: cart.length,
+                  itemBuilder: (context, index) {
+                    final cartItem = cart[index];
+                    return ProductCartView(product: cartItem, index: index);
+                  },
+                ),
+              )
+                  : Expanded(
+                child: Center(
+                  child: Text('Your cart is empty'),
+                ),
+              ),
+            ],
+          ),
         ],
-      ),
+      )
     );
   }
 }
