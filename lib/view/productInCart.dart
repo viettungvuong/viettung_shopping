@@ -49,7 +49,9 @@ class _ProductCartViewState extends State<ProductCartView> {
                 },
                 label: Text("Decrease"),
               ),
+
               Text('x${widget.product.getQuantity()}'),
+
               // Decrease quantity button
               ElevatedButton.icon(
                 icon: Icon(Icons.add),
@@ -60,7 +62,9 @@ class _ProductCartViewState extends State<ProductCartView> {
                 },
                 label: Text("Increase"),
               ),
+
               SizedBox(width: 20),
+
               // Delete button (delete from cart)
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -73,7 +77,7 @@ class _ProductCartViewState extends State<ProductCartView> {
                     cartItems.remove(widget.product);
 
                     // Update the cart provider
-                    ref.watch(cartProvider.notifier).update((state) => state);
+                    ref.watch(cartProvider.notifier).update((state) => state=cartItems);
                   });
                 },
               ),
