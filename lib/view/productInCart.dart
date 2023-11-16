@@ -31,7 +31,25 @@ class _ProductCartViewState extends State<ProductCartView> {
     return ListTile(
       leading: Image.network(widget.product.image),
       title: Text(widget.product.name),
-      subtitle: Text('x${cartItem.quantity}'),
+      subtitle: Row(
+        children: [
+          ElevatedButton.icon(
+            icon: Icon(Icons.remove),
+            onPressed: () {setState(() {
+              productController.decreaseQuantity();
+            });},
+            label: Text("Decrease"),
+          ),
+          Text('x${widget.product.getQuantity()}'),
+          ElevatedButton.icon(
+            icon: Icon(Icons.add),
+            onPressed: () {setState(() {
+              productController.increaseQuantity();
+            });},
+            label: Text("Increase"),
+          ),
+        ],
+      ),
       trailing: Text('\$${widget.product.calculatePrice()}'),
     );
   }
