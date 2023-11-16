@@ -32,7 +32,20 @@ class ProductController {
         ],
       ),
     );
+  }
+}
 
+class ProductInCartController {
+  final ProductInCart product;
+
+  ProductInCartController(this.product);
+
+  //increase decrease quantity
+  void increaseQuantity(){
+    product.updateQuantity(product.getQuantity()+1);
   }
 
+  void decreaseQuantity(){
+    product.updateQuantity(product.getQuantity()-1);
+  }
 }
