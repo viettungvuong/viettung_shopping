@@ -42,7 +42,6 @@ class _OurProductPageState extends State<OurProductPage> {
           final product = products[index];
 
           return
-
             ListTile(
               leading: Image.network(product.image),
               title: Text(product.name),

@@ -2,14 +2,15 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 
-import '../models/product.dart';
+import '../model/product.dart';
 
 class ProductController {
   final Product product;
 
   ProductController(this.product);
 
-  Opacity updateBackgroundColor(String color) {
+  // image with background color
+  Opacity backgroundColor(String colorHex) {
     int _getColorFromHex(String hexColor) {
       hexColor = hexColor.toUpperCase().replaceAll("#", "");
       if (hexColor.length == 6) {
@@ -18,7 +19,7 @@ class ProductController {
       return int.parse(hexColor, radix: 16);
     }
 
-    product.backgroundColor = Color(_getColorFromHex(color));
+    final Color color = Color(_getColorFromHex(colorHex));
 
     return Opacity(
       opacity: 0.0,
@@ -26,7 +27,7 @@ class ProductController {
         children: [
           Image.network(product.image),
           Container(
-            color: product.backgroundColor,
+            color: color,
           ),
         ],
       ),
