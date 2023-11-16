@@ -27,6 +27,7 @@ Future<void> saveCartItems(List<ProductInCart> cart) async {
 Future<List<ProductInCart>> loadCartItems() async {
   final prefs = await SharedPreferences.getInstance();
   final cartItemsJson = prefs.getString('cart_items');
+
   if (cartItemsJson != null) {
     final cartItems = jsonDecode(cartItemsJson) as List<dynamic>;
     return cartItems.map((cartItemJson) => ProductInCart.fromJson(cartItemJson)).toList();
