@@ -47,36 +47,34 @@ class _ProductViewState extends State<ProductView> {
       subtitle: Text(widget.product.description),
       trailing: isInCart
           ? Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding: EdgeInsets.all(8.0),
-            decoration: BoxDecoration(
-              color: yellow,
-              borderRadius: BorderRadius.circular(4.0),
-            ),
-            child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  'Already in cart',
-                  style: TextStyle(color: Colors.black),
+                Container(
+                  padding: EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    color: yellow,
+                    borderRadius: BorderRadius.circular(4.0),
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Already in cart',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      Icon(Icons.check, color: Colors.black),
+                    ],
+                  ),
                 ),
-                Icon(Icons.check, color: Colors.black),
               ],
-            ),
-          ),
-        ],
-      )
+            )
           : ElevatedButton(
-        onPressed: toggleCartStatus,
-        style: ElevatedButton.styleFrom(
-          primary: yellow
-        ),
-        child: Text(
-          'Add to cart',
-          style: TextStyle(color: Colors.black),
-        ),
-      ),
+              onPressed: toggleCartStatus,
+              style: ElevatedButton.styleFrom(primary: yellow),
+              child: Text(
+                'Add to cart',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
     );
   }
 }

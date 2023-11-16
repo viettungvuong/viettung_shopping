@@ -13,8 +13,18 @@ class MyCartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //show the price on the top
       appBar: AppBar(
-        title: Text('Your Cart'),
+        title: Text('My App'),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Total: ', style: TextStyle(fontWeight: FontWeight.bold),),
+              Text('\$${cartItems.fold(0.0, (previousValue, element) => previousValue + element.calculatePrice())}'),
+            ],
+          ),
+        ],
       ),
       body: ListView.builder(
         itemCount: cartItems.length,
@@ -24,25 +34,7 @@ class MyCartPage extends StatelessWidget {
           return ProductCartView(product: cartItem);
         },
       ),
-      //show the price on the top
-      bottomNavigationBar: BottomAppBar(
-        child: Container(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Total: ', style: TextStyle(fontWeight: FontWeight.bold),),
-                  Text('\$${cartItems.fold(0.0, (previousValue, element) => previousValue + element.calculatePrice())}'),
-                ],
-              ),
-              SizedBox(height: 16),
-            ],
-          ),
-        ),
-      ),
+
     );
   }
 }
