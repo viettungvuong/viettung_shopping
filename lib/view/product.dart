@@ -6,22 +6,25 @@ import '../model/product.dart';
 
 class ProductView extends StatelessWidget
 {
-  final ProductController productController;
+  final Product product;
 
   const ProductView({
     Key? key,
     required
 
-    this.productController,
+    this.product,
   }) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
+    ProductController productController = ProductController(product);
+
     return ListTile(
-      leading: productController.backgroundColor(productController.product.colorHex),
-      title: Text(productController.product.name),
-      subtitle: Text(productController.product.description),
-      trailing: Text('\$${productController.product.price}'),
+      leading: productController.backgroundColor(product.colorHex),
+      title: Text(product.name),
+      subtitle: Text(product.description),
+      trailing: Text('\$${product.price}'),
     );
   }
 }
