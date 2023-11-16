@@ -65,7 +65,7 @@ class _ProductCartViewState extends State<ProductCartView> {
                       child: InkWell(
                         onTap: () {
                           setState(() {
-                            productController.decreaseQuantity();
+                            ref.watch(cartNotifierProvider)[widget.index].decreaseQuantity();
 
                             ref.watch(cartNotifierProvider.notifier).updateAt(widget.index, productController.product);
 
@@ -86,7 +86,7 @@ class _ProductCartViewState extends State<ProductCartView> {
               ),
 
               Text(
-                '${productController.product.getQuantity()}',
+                '${ref.watch(cartNotifierProvider)[widget.index].getQuantity()}',
                 style: TextStyle(fontSize: 15),
               ),
 
@@ -101,7 +101,7 @@ class _ProductCartViewState extends State<ProductCartView> {
                       child: InkWell(
                         onTap: () {
                           setState(() {
-                            productController.increaseQuantity();
+                            ref.watch(cartNotifierProvider)[widget.index].increaseQuantity();
 
                             ref.watch(cartNotifierProvider.notifier).updateAt(widget.index, productController.product);
                           });

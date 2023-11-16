@@ -59,6 +59,15 @@ class ProductInCart extends Product with ChangeNotifier{
     _quantity = quantity;
   }
 
+  //increase decrease quantity
+  void increaseQuantity() {
+    updateQuantity(_quantity + 1);
+  }
+
+  void decreaseQuantity() {
+    updateQuantity(_quantity - 1);
+  }
+
 
   int getQuantity(){
     return _quantity;
