@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:golden_owl_shopping/ourproducts.dart';
 import 'package:golden_owl_shopping/providers.dart';
 import 'package:provider/provider.dart';
+
+import 'model/product.dart';
 
 void main() {
   runApp(ProviderScope(child: MyApp()));
@@ -59,8 +64,22 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
   }
 
   @override
-  void initState(){
+  Future<void> initState() async {
     super.initState();
+
+    final String productDataString = await rootBundle.loadString('data/shoes.json');
+    final List<dynamic> productData = jsonDecode(productDataString);
+
+    List<Product> products = [];
+
+    for (Map<String, dynamic> json in productData) {
+      Product product = Product.fromJson(json);
+      products.add(product);
+    }
+
+    setState(() {
+      ref.watch(productProvider.notifier).update((state) => state=products);
+    });
 
     loadCartItems().then((cartItems) {
       setState(() {
