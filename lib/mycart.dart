@@ -60,9 +60,15 @@ class _MyCartPageState extends ConsumerState<MyCartPage> {
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                margin: EdgeInsets.all(50),
+                  margin: EdgeInsets.only(left: 30, right: 50, top: 30, bottom: 0),
+                  width: 100,
+                  child: Image.asset("assets/nike.png", fit: BoxFit.fitWidth,)
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
                 child: Row(
                   children: [
                     Text(
